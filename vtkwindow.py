@@ -3,6 +3,8 @@ from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 from PyQt5 import uic, QtWidgets, QtCore
 import vtkmodules.util.numpy_support as npsup
 import numpy as np
+import tkinter as tk
+from tkinter import filedialog, Tk
 
 
 class GlyphViewerApp(QtWidgets.QMainWindow):
@@ -22,12 +24,14 @@ class GlyphViewerApp(QtWidgets.QMainWindow):
 		self.ui.vtk_layout.addWidget(self.vtk_widget)
 		self.ui.vtk_layout.setContentsMargins(0,0,0,0)
 		self.ui.vtk_panel.setLayout(self.ui.vtk_layout)
-		self.ui.threshold_slider.setValue(50)
-		self.ui.threshold_slider.valueChanged.connect(self.vtk_widget.set_threshold)
-		self.ui.threshold_slider.valueChanged.connect(self.set_lb_3)
+		self.ui.button_load.clicked.connect(self.vtk_widget.button_load)
+		# self.ui.threshold_slider.setValue(50)
+		# self.ui.threshold_slider.valueChanged.connect(self.vtk_widget.set_threshold)
+		# self.ui.threshold_slider.valueChanged.connect(self.set_lb_3)
 
 	def set_lb_3(self):
 		self.ui.label_3.setText(str(self.ui.threshold_slider.value()))
+
 
 	def initialize(self):
 		self.vtk_widget.start()
@@ -47,7 +51,6 @@ class GlyphViewer(QtWidgets.QFrame):
 		"""
 		super(GlyphViewer, self).__init__(parent)
 
-		self.points = points
 		interactor = QVTKRenderWindowInteractor(self)
 		self.layout = QtWidgets.QHBoxLayout()
 		self.layout.addWidget(interactor)
@@ -106,6 +109,8 @@ class GlyphViewer(QtWidgets.QFrame):
 
 
 		render_window.Render()
+		self.vtk_points_data = vtk_points_data
+		self.vtk_points_topology = vtk_points_topology
 		self.mapper = mapper
 		self.vtk_vertex = vtk_vertex
 		self.actor = actor
@@ -114,28 +119,54 @@ class GlyphViewer(QtWidgets.QFrame):
 		self.render_window = render_window
 		self.rgb = rgb
 
-	def start(self):
-		self.interactor.Initialize()
-		self.interactor.Start()
 
-	def set_threshold(self, new_value):
 
-		# Create color scalars
+
+
+	def reredner_points(self,points):
+
+
+		# Updating points
+		self.vtk_points_data.SetData(npsup.numpy_to_vtk(points[:, 0:3]))
+		self.vtk_points_topology.InsertNextCell(points.shape[0], list(range(0, len(points))))
+
+		# Creating temp array for colors
 		rgb3 = vtk.vtkUnsignedCharArray()
 		# Setting number of scalars, number of colo channels
 		rgb3.SetNumberOfComponents(3)
 		rgb3.SetName("Colors")
 
-
-
-		test = np.ones((self.points.shape))*new_value
+		# Setting color
+		test = np.ones((points.shape))*255
 		vtk_test = npsup.numpy_to_vtk(test,deep=1)
 		vtk_test.SetName("Colors")
 
+		# Copying data to proper array type
 		rgb3.ShallowCopy(vtk_test)
+
+		# Adding colors to points
 		self.vtk_vertex.GetPointData().SetScalars(rgb3)
-		self.mapper.SetInputData(self.vtk_vertex)
-		self.mapper.Modified()
-		self.actor.GetProperty().Modified()
+
+		# Update interface
+		self.renderer.ResetCamera()
 		self.render_window.Render()
+
+	def start(self):
+		self.interactor.Initialize()
+		self.interactor.Start()
+
+	def button_load(self):
+		def pull():
+			root = tk.Tk()
+			root.withdraw()
+			files = filedialog.askopenfilename(multiple=True)
+			return root.tk.splitlist(files)
+
+		Tk().withdraw()
+		file_path = pull()[0]
+		file_path = file_path.replace("/", "\\")
+		temp_points = np.genfromtxt(file_path)  # (X,Y,Z,R,G,B)
+
+		# Passing points to rerender
+		self.reredner_points(temp_points)
 

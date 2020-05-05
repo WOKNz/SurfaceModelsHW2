@@ -108,7 +108,11 @@ class GlyphViewer(QtWidgets.QFrame):
 
 
 
+
+
 		render_window.Render()
+
+
 		self.vtk_points_data = vtk_points_data
 		self.vtk_points_topology = vtk_points_topology
 		self.mapper = mapper
@@ -130,6 +134,8 @@ class GlyphViewer(QtWidgets.QFrame):
 		self.vtk_points_data.SetData(npsup.numpy_to_vtk(points[:, 0:3]))
 		self.vtk_points_topology.InsertNextCell(points.shape[0], list(range(0, len(points))))
 
+
+
 		# Creating temp array for colors
 		rgb3 = vtk.vtkUnsignedCharArray()
 		# Setting number of scalars, number of colo channels
@@ -148,8 +154,12 @@ class GlyphViewer(QtWidgets.QFrame):
 		self.vtk_vertex.GetPointData().SetScalars(rgb3)
 
 		# Update interface
+		self.actor.RotateX(0)
+		self.actor.RotateY(0)
+		self.actor.RotateZ(0)
 		self.renderer.ResetCamera()
 		self.render_window.Render()
+
 
 	def start(self):
 		self.interactor.Initialize()
@@ -169,4 +179,3 @@ class GlyphViewer(QtWidgets.QFrame):
 
 		# Passing points to rerender
 		self.reredner_points(temp_points)
-

@@ -101,9 +101,9 @@ class kdtree():
 		maxval = hrect[1, :]
 		minval = hrect[0, :]
 		p = centroid.copy()
-		idx = p < minval
+		idx = p.T < minval
 		p[idx] = minval[idx]
-		idx = p > maxval
+		idx = p.T > maxval
 		p[idx] = maxval[idx]
 		return ((p - centroid) ** 2).sum() < r2
 
@@ -152,8 +152,8 @@ if __name__ == '__main__':
 	tests = [[1, 2, 15]]
 	# paths = ['AD9_2.xyz','AD12_1.xyz','AD14_3.xyz','airborne1.pts','DU9_2.xyz']
 	# paths = ['AD9_2.xyz','AD12_1.xyz','AD14_3.xyz','airborne1.pts','DU9_2.xyz','ullmann_subset.xyz']
-	paths = ['AD9_2.xyz']
-	# paths = ['ullmann_subset.xyz']
+	# paths = ['AD9_2.xyz']
+	paths = ['ullmann_subset.xyz']
 
 	for path in paths:
 		time_results = []

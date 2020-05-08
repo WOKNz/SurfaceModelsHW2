@@ -20,14 +20,7 @@ class pointcloud():
 		def dist_power2(point_1, point_2):
 			return (point_1[0]-point_2[0])**2+(point_1[1]-point_2[1])**2
 
-		dist_2_np_matrix = np.zeros((self.points.shape[0],self.points.shape[0]))
-
-		for row in range(0,self.points.shape[0]):
-			for column in range(row,self.points.shape[0]):
-				dist_2_np_matrix[row,column] = dist_power2()
-
 		for i in range(0,len(self.points)):
-
 			temp_list = []
 			for j in range(0,len(self.points)):
 				dist2 = dist_power2(self.points[i],self.points[j])

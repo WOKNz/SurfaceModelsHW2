@@ -171,8 +171,8 @@ if __name__ == '__main__':
 			np.savetxt(ground_p_str, np.array(list1))
 			np.savetxt(surface_p_str, np.array(list2))
 		time_results_pd = pd.DataFrame(time_results)
-		time_results_pd.to_csv(filename + 'resutls_equallcells.csv')
-		print('File:'+filename+'\nDone!')
+		time_results_pd.to_csv('speedtest/' + filename + 'resutls_equallcells.csv')
+		print('File:' + filename + '\nDone!')
 
 # import datetime
 #

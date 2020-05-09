@@ -130,3 +130,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+/Data/DataPoints/untermaederbrunnen_station1_xyz_intensity_rgb/

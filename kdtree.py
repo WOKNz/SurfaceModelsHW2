@@ -1,140 +1,102 @@
-#!python numbers=disable
-
-# Copyleft 2008 Sturla Molden
-# University of Oslo
-
-# import psyco
-# psyco.full()
-
 import numpy as np
 
-
 class kdtree():
-	def __init__(self, data, leafsize=10):
-		"""
-		build a kd-tree for O(n log n) nearest neighbour search
+	def __init__(self, points, is_axis_x, p_in_leaf):
+		self.number_of_points = points.shape[0]
+		self.is_axis_x = is_axis_x
+		self.points = points
+		self.is_leaf = False
 
-		input:
-			data:       2D ndarray, shape =(ndim,ndata), preferentially C order
-			leafsize:   max. number of data points to leave in a leaf
+		self.minmax_xy = [np.min(self.points[:, 0]),
+		                  np.min(self.points[:, 1]),
+		                  np.max(self.points[:, 0]),
+		                  np.max(self.points[:, 1])]  # minX,minY,maxX,maxY
 
-		output:
-			kd-tree:    list of tuples
-		"""
+		# Checking for leaf
+		if self.number_of_points < p_in_leaf:
+			self.is_leaf = True
+			return
 
-		ndim = data.shape[0]
-		ndata = data.shape[1]
+		self.node1 = None
+		self.node2 = None
 
-		# find bounding hyper-rectangle
-		hrect = np.zeros((2, data.shape[0]))
-		hrect[0, :] = data.min(axis=1)
-		hrect[1, :] = data.max(axis=1)
+		id = np.argsort(self.points[:, int(not is_axis_x)], kind='mergesort')
+		self.points[:, :] = self.points[id, :]
+		points_bottom_or_left = self.points[:int(len(id) / 2), :]
+		points_top_or_right = self.points[int(len(id) / 2):, :]
 
-		# create root of kd-tree
-		idx = np.argsort(data[0, :], kind='mergesort')
-		data[:, :] = data[:, idx]
-		splitval = data[0, int(ndata / 2)]
+		self.node1 = kdtree(points_bottom_or_left, not self.is_axis_x, p_in_leaf)
+		self.node2 = kdtree(points_top_or_right, not self.is_axis_x, p_in_leaf)
 
-		left_hrect = hrect.copy()
-		right_hrect = hrect.copy()
-		left_hrect[1, 0] = splitval
-		right_hrect[0, 0] = splitval
+	def intersect_or_inside(self, center, radius, corners):
+		if center[1] + radius < corners[1] or center[1] - radius > corners[3]:
+			return False
+		elif center[0] + radius < corners[0] or center[0] - radius > corners[2]:
+			return False
+		else:
+			return True
 
-		self.tree = [(None, None, left_hrect, right_hrect, None, None)]
-
-		stack = [(data[:, :int(ndata / 2)], idx[:int(ndata / 2)], 1, 0, True),
-		         (data[:, int(ndata / 2):], idx[int(ndata / 2):], 1, 0, False)]
-
-		# recursively split data in halves using hyper-rectangles:
-		while stack:
-
-			# pop data off stack
-			data, didx, depth, parent, leftbranch = stack.pop()
-			ndata = data.shape[1]
-			nodeptr = len(self.tree)
-
-			# update parent node
-
-			_didx, _data, _left_hrect, _right_hrect, left, right = self.tree[parent]
-
-			self.tree[parent] = (_didx, _data, _left_hrect, _right_hrect, nodeptr, right) if leftbranch \
-				else (_didx, _data, _left_hrect, _right_hrect, left, nodeptr)
-
-			# insert node in kd-tree
-
-			# leaf node?
-			if ndata <= leafsize:
-				_didx = didx.copy()
-				_data = data.copy()
-				leaf = (_didx, _data, None, None, 0, 0)
-				self.tree.append(leaf)
-
-			# not a leaf, split the data in two
+	@staticmethod
+	def pointsInRadius(tree, point, radius, list=[]):
+		stack_list = list
+		if tree.intersect_or_inside(point, radius, tree.minmax_xy):
+			if tree.is_leaf:
+				return tree.points.tolist()
 			else:
-				splitdim = depth % ndim
-				idx = np.argsort(data[splitdim, :], kind='mergesort')
-				data[:, :] = data[:, idx]
-				didx = didx[idx]
-				nodeptr = len(self.tree)
-				stack.append((data[:, :int(ndata / 2)], didx[:int(ndata / 2)], depth + 1, nodeptr, True))
-				stack.append((data[:, int(ndata / 2):], didx[int(ndata / 2):], depth + 1, nodeptr, False))
-				splitval = data[splitdim, int(ndata / 2)]
-				if leftbranch:
-					left_hrect = _left_hrect.copy()
-					right_hrect = _left_hrect.copy()
-				else:
-					left_hrect = _right_hrect.copy()
-					right_hrect = _right_hrect.copy()
-				left_hrect[1, splitdim] = splitval
-				right_hrect[0, splitdim] = splitval
-				# append node to tree
-				self.tree.append((None, None, left_hrect, right_hrect, None, None))
+				stack_list = tree.pointsInRadius(tree.node1, point, radius, stack_list) \
+				             + tree.pointsInRadius(tree.node2, point, radius, stack_list)
 
+		return stack_list
 
-	# !python numbers=disable
+	def filter(self, radius, angle):
+		self.tan_angle_power2 = np.tan(angle) ** 2
+		self.radius2 = radius ** 2
+		self.ground_points = []
+		self.surface_points = []
 
-	def intersect(self, hrect, r2, centroid):
-		"""
-		checks if the hyperrectangle hrect intersects with the
-		hypersphere defined by centroid and r2
-		"""
-		maxval = hrect[1, :]
-		minval = hrect[0, :]
-		p = centroid.copy()
-		idx = p.T < minval
-		p[idx] = minval[idx]
-		idx = p.T > maxval
-		p[idx] = maxval[idx]
-		return ((p - centroid) ** 2).sum() < r2
+		def dist_power2(point_1, point_2):
+			return (point_1[0] - point_2[0]) ** 2 + (point_1[1] - point_2[1]) ** 2
 
-	def pointsInRadius(self, datapoint, radius):
-		""" find all points within radius of datapoint """
-		stack = [self.tree[0]]
-		inside = []
-		while stack:
+		pr = cProfile.Profile()
+		pr.enable()
 
-			leaf_idx, leaf_data, left_hrect, \
-			right_hrect, left, right = stack.pop()
+		for i in range(0, len(self.points)):
 
-			# leaf
-			if leaf_idx is not None:
-				param = leaf_data.shape[0]
-				distance = np.sqrt(((leaf_data - datapoint.reshape((param, 1))) ** 2).sum(axis=0))
-				near = np.where(distance <= radius)
-				if len(near[0]):
-					idx = leaf_idx[near]
-					distance = distance[near]
-					inside += (zip(distance, idx))
+			relevant_points_leafs = self.pointsInRadius(self, self.points[i], radius)
+			# if i == 308:
+			# 	np.savetxt('test/points2_' + str(i)+'.xyz', np.array(relevant_points_leafs))
+			# 	np.savetxt('test/point2_' + str(i)+'.xyz', np.array([self.points[i]]))
 
-			else:
+			relevant_points_radius = []
+			for j in range(0, len(relevant_points_leafs)):
+				dist2 = dist_power2(self.points[i], relevant_points_leafs[j])
+				if dist2 < self.radius2:
+					relevant_points_radius.append([self.points[j], dist2])
 
-				if self.intersect(left_hrect, radius, datapoint):
-					stack.append(self.tree[left])
+			# if i == 300:
+			# 	np.savetxt('cells.xyz', np.array(relevant_points_leafs))
+			# 	np.savetxt('radius.xyz', np.array(relevant_points_radius))
 
-				if self.intersect(right_hrect, radius, datapoint):
-					stack.append(self.tree[right])
+			kmax = int(len(relevant_points_radius))
+			added_to_surface = False
+			for k in range(0, kmax):
+				if relevant_points_radius[k][1] == 0.0:
+					continue
+				if ((relevant_points_radius[k][0][2] - self.points[i][2]) ** 2) / relevant_points_radius[k][
+					1] > self.tan_angle_power2:
+					if relevant_points_radius[k][0][2] < self.points[i][2]:
+						self.surface_points.append(self.points[i])
+						added_to_surface = True
+						break
+			if not added_to_surface:
+				self.ground_points.append(self.points[i])
+			if i == 20000:
+				pr.disable()
+				pr.dump_stats('profile400.pstat')
+				print()
 
-		return inside
+	def getlists(self):
+		return self.ground_points, self.surface_points
 
 if __name__ == '__main__':
 	# path = 'Data/DataPoints/AD9_2.xyz'
@@ -147,9 +109,10 @@ if __name__ == '__main__':
 
 	from pathlib import Path
 	import datetime
+	import pandas as pd
 
-	# tests = [[0.5,0.5,15],[2,0.75,15],[3,1.0,15],[4,1.5,15],[5,2,65],[6,3,65],[7,4,65],[8,5,65]]
-	tests = [[1, 2, 15]]
+	# tests = [[1,0.5,15],[2,0.75,15],[3,1.0,15],[4,1.5,15],[5,2,65],[6,3,65],[7,4,65],[8,5,65]]
+	tests = [[1, 0.5, 15]]
 	# paths = ['AD9_2.xyz','AD12_1.xyz','AD14_3.xyz','airborne1.pts','DU9_2.xyz']
 	# paths = ['AD9_2.xyz','AD12_1.xyz','AD14_3.xyz','airborne1.pts','DU9_2.xyz','ullmann_subset.xyz']
 	# paths = ['AD9_2.xyz']
@@ -164,10 +127,12 @@ if __name__ == '__main__':
 			surface_p_str = 'results3/' + filename + '_surface_' + str(test[0]) + '.xyz'
 			temp_points = np.genfromtxt(full_path)
 
-			kdtree1 = kdtree(temp_points.T)
-			points_in_radius = kdtree1.pointsInRadius(np.array([[173221.697],[433859.048],[7.043]]),2)
+			kdtree1 = kdtree(temp_points, False, 40)
 
 			start = datetime.datetime.now()
+
+			import cProfile
+
 			kdtree1.filter(test[1], (test[2] * np.pi) / 180.0)
 			finish = datetime.datetime.now()
 			time_results.append([filename, test[0], finish - start])
@@ -175,5 +140,5 @@ if __name__ == '__main__':
 			np.savetxt(ground_p_str, np.array(list1))
 			np.savetxt(surface_p_str, np.array(list2))
 		time_results_pd = pd.DataFrame(time_results)
-		time_results_pd.to_csv(filename + 'resutls_equallcells.csv')
-		print('File:'+filename+'\nDone!')
+		time_results_pd.to_csv('speedtest/' + filename + 'resutls_KdTree.csv')
+		print('File:' + filename + '\nDone!')

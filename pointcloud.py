@@ -1,5 +1,5 @@
 import numpy as np
-from pathlib import Path
+
 import pandas as pd
 
 class pointcloud():
@@ -43,39 +43,3 @@ class pointcloud():
 
 	def getlists(self):
 		return self.ground_points,self.surface_points
-
-if __name__ == '__main__':
-	# path = 'Data/DataPoints/AD9_2.xyz'
-  # (X,Y,Z,R,G,B)
-	# temp_points = np.array([[-1,-1,0],
-	# 						[-1,1,0],
-	# 						[1,-1,0],
-	# 						[1,1,0],
-	# 						[0,0,10]])
-
-	import datetime
-
-	tests = [[1,0.5,15],[2,0.75,15],[3,1.0,15],[4,1.5,15],[5,2,65],[6,3,65],[7,4,65],[8,5,65]]
-	paths = ['AD9_2.xyz','AD12_1.xyz','AD14_3.xyz','airborne1.pts','DU9_2.xyz','ullmann_subset.xyz']
-	# paths = ['ullmann_subset.xyz']
-
-
-	for path in paths:
-		time_results = []
-		filename = Path(path).stem
-		full_path = 'Data/DataPoints/'+path
-		for test in tests:
-			ground_p_str = 'results/'+filename+'_ground_'+str(test[0])+'.xyz'
-			surface_p_str = 'results/'+filename+'_surface_'+str(test[0])+'.xyz'
-			temp_points = np.genfromtxt(full_path)
-			pntc1 = pointcloud(temp_points)
-
-			start = datetime.datetime.now()
-			pntc1.filter(test[1], (test[2] * np.pi) / 180.0)
-			finish = datetime.datetime.now()
-			time_results.append([filename, test[0], finish - start])
-			list1, list2 = pntc1.getlists()
-			np.savetxt(ground_p_str, np.array(list1))
-			np.savetxt(surface_p_str, np.array(list2))
-		time_results_pd = pd.DataFrame(time_results)
-		time_results_pd.to_csv('speedtest/' + filename + 'resutls_cloud.csv')

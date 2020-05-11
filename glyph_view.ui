@@ -34,6 +34,16 @@
                             </property>
                             <layout class="QVBoxLayout" name="verticalLayout">
                                 <item>
+                                    <widget class="QGroupBox" name="groupBox_2">
+                                        <property name="title">
+                                            <string>Load</string>
+                                        </property>
+                                        <property name="flat">
+                                            <bool>true</bool>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
                                     <layout class="QHBoxLayout" name="frame_load">
                                         <property name="leftMargin">
                                             <number>0</number>
@@ -83,6 +93,130 @@
                                     </layout>
                                 </item>
                                 <item>
+                                    <widget class="QGroupBox" name="groupBox">
+                                        <property name="sizeIncrement">
+                                            <size>
+                                                <width>0</width>
+                                                <height>0</height>
+                                            </size>
+                                        </property>
+                                        <property name="title">
+                                            <string>Parameters</string>
+                                        </property>
+                                        <property name="flat">
+                                            <bool>true</bool>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <layout class="QHBoxLayout" name="frame_parameters">
+                                        <property name="leftMargin">
+                                            <number>0</number>
+                                        </property>
+                                        <property name="topMargin">
+                                            <number>8</number>
+                                        </property>
+                                        <property name="rightMargin">
+                                            <number>0</number>
+                                        </property>
+                                        <property name="bottomMargin">
+                                            <number>8</number>
+                                        </property>
+                                        <item>
+                                            <widget class="QLabel" name="label_radius">
+                                                <property name="text">
+                                                    <string>Radius(m):</string>
+                                                </property>
+                                            </widget>
+                                        </item>
+                                        <item>
+                                            <widget class="QLineEdit" name="line_radius"/>
+                                        </item>
+                                        <item>
+                                            <widget class="QLabel" name="label_angle">
+                                                <property name="text">
+                                                    <string>Angle(Deg):</string>
+                                                </property>
+                                            </widget>
+                                        </item>
+                                        <item>
+                                            <widget class="QLineEdit" name="line_angle"/>
+                                        </item>
+                                    </layout>
+                                </item>
+                                <item>
+                                    <widget class="QGroupBox" name="groupBox_3">
+                                        <property name="title">
+                                            <string>Database Type</string>
+                                        </property>
+                                        <property name="flat">
+                                            <bool>true</bool>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <widget class="QComboBox" name="combo_type">
+                                        <item>
+                                            <property name="text">
+                                                <string>PointCloud</string>
+                                            </property>
+                                        </item>
+                                        <item>
+                                            <property name="text">
+                                                <string>EqualCells</string>
+                                            </property>
+                                        </item>
+                                        <item>
+                                            <property name="text">
+                                                <string>K-d tree</string>
+                                            </property>
+                                        </item>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <widget class="QGroupBox" name="groupBox_4">
+                                        <property name="title">
+                                            <string>Results</string>
+                                        </property>
+                                        <property name="flat">
+                                            <bool>true</bool>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <layout class="QHBoxLayout" name="horizontalLayout_2">
+                                        <property name="topMargin">
+                                            <number>8</number>
+                                        </property>
+                                        <property name="bottomMargin">
+                                            <number>8</number>
+                                        </property>
+                                        <item>
+                                            <widget class="QCheckBox" name="check_ground">
+                                                <property name="text">
+                                                    <string>Show ground points</string>
+                                                </property>
+                                                <property name="checked">
+                                                    <bool>true</bool>
+                                                </property>
+                                                <property name="tristate">
+                                                    <bool>false</bool>
+                                                </property>
+                                            </widget>
+                                        </item>
+                                        <item>
+                                            <widget class="QCheckBox" name="check_surface">
+                                                <property name="text">
+                                                    <string>Show object points</string>
+                                                </property>
+                                                <property name="checked">
+                                                    <bool>true</bool>
+                                                </property>
+                                            </widget>
+                                        </item>
+                                    </layout>
+                                </item>
+                                <item>
                                     <spacer name="verticalSpacer">
                                         <property name="orientation">
                                             <enum>Qt::Vertical</enum>
@@ -94,6 +228,13 @@
                                             </size>
                                         </property>
                                     </spacer>
+                                </item>
+                                <item>
+                                    <widget class="QPushButton" name="button_run">
+                                        <property name="text">
+                                            <string>Run</string>
+                                        </property>
+                                    </widget>
                                 </item>
                             </layout>
                         </widget>

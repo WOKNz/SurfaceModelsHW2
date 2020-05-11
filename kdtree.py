@@ -57,8 +57,8 @@ class kdtree():
 		def dist_power2(point_1, point_2):
 			return (point_1[0] - point_2[0]) ** 2 + (point_1[1] - point_2[1]) ** 2
 
-		pr = cProfile.Profile()
-		pr.enable()
+		# pr = cProfile.Profile()
+		# pr.enable()
 
 		for i in range(0, len(self.points)):
 
@@ -90,55 +90,12 @@ class kdtree():
 						break
 			if not added_to_surface:
 				self.ground_points.append(self.points[i])
-			if i == 20000:
-				pr.disable()
-				pr.dump_stats('profile400.pstat')
-				print()
+
+	# if i == 20000:
+	#	pr.disable()
+	#	pr.dump_stats('profile400.pstat')
+	# print()
 
 	def getlists(self):
 		return self.ground_points, self.surface_points
 
-if __name__ == '__main__':
-	# path = 'Data/DataPoints/AD9_2.xyz'
-	# (X,Y,Z,R,G,B)
-	# temp_points = np.array([[-1,-1,0],
-	# 						[-1,1,0],
-	# 						[1,-1,0],
-	# 						[1,1,0],
-	# 						[0,0,10]])
-
-	from pathlib import Path
-	import datetime
-	import pandas as pd
-
-	# tests = [[1,0.5,15],[2,0.75,15],[3,1.0,15],[4,1.5,15],[5,2,65],[6,3,65],[7,4,65],[8,5,65]]
-	tests = [[1, 0.5, 15]]
-	# paths = ['AD9_2.xyz','AD12_1.xyz','AD14_3.xyz','airborne1.pts','DU9_2.xyz']
-	# paths = ['AD9_2.xyz','AD12_1.xyz','AD14_3.xyz','airborne1.pts','DU9_2.xyz','ullmann_subset.xyz']
-	# paths = ['AD9_2.xyz']
-	paths = ['ullmann_subset.xyz']
-
-	for path in paths:
-		time_results = []
-		filename = Path(path).stem
-		full_path = 'Data/DataPoints/' + path
-		for test in tests:
-			ground_p_str = 'results3/' + filename + '_ground_' + str(test[0]) + '.xyz'
-			surface_p_str = 'results3/' + filename + '_surface_' + str(test[0]) + '.xyz'
-			temp_points = np.genfromtxt(full_path)
-
-			kdtree1 = kdtree(temp_points, False, 40)
-
-			start = datetime.datetime.now()
-
-			import cProfile
-
-			kdtree1.filter(test[1], (test[2] * np.pi) / 180.0)
-			finish = datetime.datetime.now()
-			time_results.append([filename, test[0], finish - start])
-			list1, list2 = kdtree1.getlists()
-			np.savetxt(ground_p_str, np.array(list1))
-			np.savetxt(surface_p_str, np.array(list2))
-		time_results_pd = pd.DataFrame(time_results)
-		time_results_pd.to_csv('speedtest/' + filename + 'resutls_KdTree.csv')
-		print('File:' + filename + '\nDone!')

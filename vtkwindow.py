@@ -29,9 +29,6 @@ class GlyphViewerApp(QtWidgets.QMainWindow):
 		# self.ui.threshold_slider.valueChanged.connect(self.vtk_widget.set_threshold)
 		# self.ui.threshold_slider.valueChanged.connect(self.set_lb_3)
 
-	def set_lb_3(self):
-		self.ui.label_3.setText(str(self.ui.threshold_slider.value()))
-
 
 	def initialize(self):
 		self.vtk_widget.start()
@@ -40,15 +37,11 @@ class GlyphViewerApp(QtWidgets.QMainWindow):
 class GlyphViewer(QtWidgets.QFrame):
 	"""
 	Full Vtk sequence class
-
+	:param points: An array of points (x,y,z)
+	:type points: ndarray (nx3)
 	"""
 
 	def __init__(self, parent, points):
-		"""
-		Builder
-		:param points: An array of points (x,y,z)
-		:type points: ndarray (nx3)
-		"""
 		super(GlyphViewer, self).__init__(parent)
 
 		interactor = QVTKRenderWindowInteractor(self)
@@ -86,9 +79,6 @@ class GlyphViewer(QtWidgets.QFrame):
 		# print('len of points:',len(points_list_ids))
 		# Initializing PolyData (vertices)
 		vtk_vertex = vtk.vtkPolyData()
-
-
-		# print(vtk_points_data)
 
 
 		# Set the vertices we created as the geometry and topology of the polydata

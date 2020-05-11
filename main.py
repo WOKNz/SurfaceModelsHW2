@@ -5,7 +5,7 @@ from PyQt5 import uic, QtWidgets
 
 if __name__ == '__main__':
 
-    # recompile ui
+    # Ui design files
     with open('glyph_view.ui') as ui_file:
         with open('glyph_ui.py', 'w') as py_ui_file:
             uic.compileUi(ui_file, py_ui_file)

@@ -1,6 +1,14 @@
 import numpy as np
 
 class kdtree():
+	"""
+	Kd-tree object, builded recursively
+
+	:param points: Points to be in kd tree
+	:param is_axis_x: Initial axis seperator
+	:param p_in_leaf: Max points in Leaf
+	"""
+
 	def __init__(self, points, is_axis_x, p_in_leaf):
 		self.number_of_points = points.shape[0]
 		self.is_axis_x = is_axis_x
@@ -12,11 +20,12 @@ class kdtree():
 		                  np.max(self.points[:, 0]),
 		                  np.max(self.points[:, 1])]  # minX,minY,maxX,maxY
 
-		# Checking for leaf
+		# Checking for leaf max size
 		if self.number_of_points < p_in_leaf:
 			self.is_leaf = True
 			return
 
+		# Nodes
 		self.node1 = None
 		self.node2 = None
 
@@ -25,6 +34,7 @@ class kdtree():
 		points_bottom_or_left = self.points[:int(len(id) / 2), :]
 		points_top_or_right = self.points[int(len(id) / 2):, :]
 
+		# Creating sons (nodes), seperator axis changed!
 		self.node1 = kdtree(points_bottom_or_left, not self.is_axis_x, p_in_leaf)
 		self.node2 = kdtree(points_top_or_right, not self.is_axis_x, p_in_leaf)
 
@@ -38,6 +48,17 @@ class kdtree():
 
 	@staticmethod
 	def pointsInRadius(tree, point, radius, list=[]):
+		"""
+		Checks relevant nodes if the intersect with circle
+
+		:param point: Examinated point
+		:param radius: Radius from that point
+		:param list: Empty list for backwards points collecting (recusively)
+		:return: List of points that potentialy to be in radius
+		:type point: list
+		:type radius: float
+		:rtype: list
+		"""
 		stack_list = list
 		if tree.intersect_or_inside(point, radius, tree.minmax_xy):
 			if tree.is_leaf:
@@ -49,6 +70,16 @@ class kdtree():
 		return stack_list
 
 	def filter(self, radius, angle):
+		"""
+		Filter ot the points in two types according to threshold algorithm
+
+		:param radius: Searched radius in meters
+		:param angle: Treshold angle in degrees
+		:return: Two lists of points ground and objects
+		:type radius: float
+		:type angle: float
+		:rtype: list,list
+		"""
 		self.tan_angle_power2 = np.tan(angle) ** 2
 		self.radius2 = radius ** 2
 		self.ground_points = []
@@ -98,4 +129,3 @@ class kdtree():
 
 	def getlists(self):
 		return self.ground_points, self.surface_points
-

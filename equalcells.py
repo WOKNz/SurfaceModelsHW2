@@ -4,6 +4,10 @@ import pandas as pd
 
 
 class eqlcells():
+	"""
+	Equal Cells database
+	"""
+
 	def __init__(self, points):
 		self.points = points.tolist()
 		self.points_np = points
@@ -40,6 +44,16 @@ class eqlcells():
 		# print('debug')
 
 	class cell():
+		"""
+		Cell object
+
+		:param corners: Corners of the cell
+		:param points: Points that inside the cell
+		:type corners: list
+		:type points: list
+		:return: cell
+		"""
+
 		def __init__(self, corners, points=None):
 			self.corners = corners
 			if points is None:
@@ -48,31 +62,57 @@ class eqlcells():
 				self.points = points
 
 		def getPoints(self):
+			"""
+			:return: Return points that cell have
+			"""
 			return self.points
 
 		def getCorners(self):
+			"""
+			:return: Return corners that cell have
+			:rtype: list
+			"""
 			temp_list = []
-			temp_list.append([self.corners[0,0,0],self.corners[0,0,1]])
-			temp_list.append([self.corners[0,1,0],self.corners[0,1,1]])
-			temp_list.append([self.corners[1,0,0],self.corners[1,0,1]])
-			temp_list.append([self.corners[1,1,0],self.corners[1,1,1]])
+			temp_list.append([self.corners[0, 0, 0], self.corners[0, 0, 1]])
+			temp_list.append([self.corners[0, 1, 0], self.corners[0, 1, 1]])
+			temp_list.append([self.corners[1, 0, 0], self.corners[1, 0, 1]])
+			temp_list.append([self.corners[1, 1, 0], self.corners[1, 1, 1]])
 			return temp_list
 
 		def addPoint(self, point):
+			"""
+			:param point: Adds point to the cell list of points
+			"""
 			self.points.append(point)
 
 	def addPointsToCells(self, point):
+		"""
+		Adds point to relevant cell in Equal cells object
+
+		:param point: Point to be inserted
+		"""
 		cell_column = int((point[0] - self.minmax_xy[0]) * 10.0 / self.diffX)
 		cell_row = int((point[1] - self.minmax_xy[1]) * 10.0 / self.diffY)
 		if cell_row == 10:
 			cell_row = cell_row - 1
 		if cell_column == 10:
 			cell_column = cell_column - 1
-		self.cells_list[9-cell_row][cell_column].addPoint(point)
+		self.cells_list[9 - cell_row][cell_column].addPoint(point)
 		# if cell_row == 0 or cell_column == 0 or cell_row == 9 or cell_column == 0:
 		#np.savetxt('test/first_box' + str(cell_row)+'x'+str(cell_column)+ '.xyz', np.array(self.cells_list[cell_row][cell_column].getCorners()))
 
 	def intersect(self, center, radius, cell):
+		"""
+		Checks if the circle around the relevant point is intersecting with the cell bouderies
+
+		:param radius: Searched radius in meters
+		:param angle: Treshold angle in degrees
+		:param cell: Cell object
+		:type radius: float
+		:type angle: float
+		:type cell: cell
+		:rtype: bool
+		"""
 		if center[1] + radius < cell.corners[1, 0, 1] or center[1] - radius > cell.corners[0, 0, 1]:
 			return False
 		elif center[0] + radius < cell.corners[0, 0, 0] or center[0] - radius > cell.corners[0, 1, 0]:
@@ -81,6 +121,16 @@ class eqlcells():
 			return True
 
 	def pointsInRadius(self, point, radius):
+		"""
+		Checks all cells if the intersect with circle
+
+		:param point: Examinated point
+		:param radius: Radius from that point
+		:return: List of points that potentialy to be in radius
+		:type point: list
+		:type radius: float
+		:rtype: list
+		"""
 		temp_list = []
 		for row in range(0, len(self.cells_list)):
 			for column in range(0, len(self.cells_list[0])):
@@ -94,6 +144,16 @@ class eqlcells():
 		return flat_list
 
 	def filter(self, radius, angle):
+		"""
+		Filter ot the points in two types according to threshold algorithm
+
+		:param radius: Searched radius in meters
+		:param angle: Treshold angle in degrees
+		:return: Two lists of points ground and objects
+		:type radius: float
+		:type angle: float
+		:rtype: list,list
+		"""
 		self.tan_angle_power2 = np.tan(angle) ** 2
 		self.radius2 = radius ** 2
 
@@ -108,6 +168,7 @@ class eqlcells():
 
 
 			relevant_points_radius = []
+
 			for j in range(0, len(relevant_points_cells)):
 				dist2 = dist_power2(self.points[i], relevant_points_cells[j])
 				if dist2 < self.radius2:
@@ -119,8 +180,9 @@ class eqlcells():
 
 			kmax = int(len(relevant_points_radius))
 			added_to_surface = False
+
 			for k in range(0, kmax):
-				if relevant_points_radius[k][1] == 0.0:
+				if relevant_points_radius[k][1] == 0.0:  # Kick self point
 					continue
 				if ((relevant_points_radius[k][0][2] - self.points[i][2]) ** 2) / relevant_points_radius[k][
 					1] > self.tan_angle_power2:

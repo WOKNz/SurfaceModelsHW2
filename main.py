@@ -10,6 +10,7 @@ if __name__ == '__main__':
         with open('glyph_ui.py', 'w') as py_ui_file:
             uic.compileUi(ui_file, py_ui_file)
 
+    # Starting the app
     app = QtWidgets.QApplication([])
     main_window = GlyphViewerApp(np.array([[0, 0, 0]]))  # Creating app window with one point
     main_window.show()

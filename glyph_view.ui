@@ -16,7 +16,7 @@
             </font>
         </property>
         <property name="windowTitle">
-            <string>GlyphViewer</string>
+            <string>Surface Models - HW2</string>
         </property>
         <widget class="QWidget" name="centralwidget">
             <layout class="QHBoxLayout" name="horizontalLayout">
@@ -252,9 +252,13 @@
                                         <property name="plainText">
                                             <string>Usage:
                                                 1) Load points file .xyz or .pts with data rows only
+
                                                 2) Choose radius between 0 and 100m and angle between 0 and 90deg
+
                                                 3) Choose database type
+
                                                 4) Choose to show or hide come of the points
+
                                                 5) Run
                                             </string>
                                         </property>

@@ -131,27 +131,32 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-	    _translate = QtCore.QCoreApplication.translate
-	    MainWindow.setWindowTitle(_translate("MainWindow", "GlyphViewer"))
-	    self.groupBox_2.setTitle(_translate("MainWindow", "1) Load"))
-	    self.label_info.setText(_translate("MainWindow", "Load Points (.xyz/.pts)"))
-	    self.button_load.setText(_translate("MainWindow", "Load file"))
-	    self.groupBox.setTitle(_translate("MainWindow", "2) Parameters"))
-	    self.label_radius.setText(_translate("MainWindow", "Radius(m):"))
-	    self.line_radius.setText(_translate("MainWindow", "0.5"))
-	    self.label_angle.setText(_translate("MainWindow", "Angle(Deg):"))
-	    self.line_angle.setText(_translate("MainWindow", "15"))
-	    self.groupBox_3.setTitle(_translate("MainWindow", "3) Database Type"))
-	    self.combo_type.setItemText(0, _translate("MainWindow", "PointCloud"))
-	    self.combo_type.setItemText(1, _translate("MainWindow", "EqualCells"))
-	    self.combo_type.setItemText(2, _translate("MainWindow", "K-d tree"))
-	    self.groupBox_4.setTitle(_translate("MainWindow", "4) Results"))
-	    self.check_ground.setText(_translate("MainWindow", "Show ground points"))
-	    self.check_surface.setText(_translate("MainWindow", "Show object points"))
-	    self.plainTextEdit.setPlainText(_translate("MainWindow", "Usage:\n"
-	                                                             "1) Load points file .xyz or .pts with data rows only\n"
-	                                                             "2) Choose radius between 0 and 100m and angle between 0 and 90deg\n"
-	                                                             "3) Choose database type\n"
-	                                                             "4) Choose to show or hide come of the points\n"
-	                                                             "5) Run"))
-	    self.button_run.setText(_translate("MainWindow", "Run"))
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "Surface Models - HW2"))
+        self.groupBox_2.setTitle(_translate("MainWindow", "1) Load"))
+        self.label_info.setText(_translate("MainWindow", "Load Points (.xyz/.pts)"))
+        self.button_load.setText(_translate("MainWindow", "Load file"))
+        self.groupBox.setTitle(_translate("MainWindow", "2) Parameters"))
+        self.label_radius.setText(_translate("MainWindow", "Radius(m):"))
+        self.line_radius.setText(_translate("MainWindow", "0.5"))
+        self.label_angle.setText(_translate("MainWindow", "Angle(Deg):"))
+        self.line_angle.setText(_translate("MainWindow", "15"))
+        self.groupBox_3.setTitle(_translate("MainWindow", "3) Database Type"))
+        self.combo_type.setItemText(0, _translate("MainWindow", "PointCloud"))
+        self.combo_type.setItemText(1, _translate("MainWindow", "EqualCells"))
+        self.combo_type.setItemText(2, _translate("MainWindow", "K-d tree"))
+        self.groupBox_4.setTitle(_translate("MainWindow", "4) Results"))
+        self.check_ground.setText(_translate("MainWindow", "Show ground points"))
+        self.check_surface.setText(_translate("MainWindow", "Show object points"))
+        self.plainTextEdit.setPlainText(_translate("MainWindow", "Usage:\n"
+                                                                 "1) Load points file .xyz or .pts with data rows only\n"
+                                                                 "\n"
+                                                                 "2) Choose radius between 0 and 100m and angle between 0 and 90deg\n"
+                                                                 "\n"
+                                                                 "3) Choose database type\n"
+                                                                 "\n"
+                                                                 "4) Choose to show or hide come of the points\n"
+                                                                 "\n"
+                                                                 "5) Run\n"
+                                                                 "                                            "))
+        self.button_run.setText(_translate("MainWindow", "Run"))

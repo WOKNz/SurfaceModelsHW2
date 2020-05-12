@@ -4,20 +4,19 @@ import numpy as np
 from pointcloud import pointcloud
 from equalcells import eqlcells
 from kdtree import kdtree
-import pandas as pd
+import pandas as pd  # Better tables
 import os
 
 if __name__ == '__main__':
 
 	tests = [[1, 0.5, 15], [2, 0.75, 15], [3, 1.0, 15], [4, 1.5, 15], [5, 2, 65], [6, 3, 65], [7, 4, 65], [8, 5, 65]]
 	paths = ['AD9_2.xyz', 'AD12_1.xyz', 'AD14_3.xyz', 'airborne1.pts', 'DU9_2.xyz']
-
-
 	# paths = ['AD9_2.xyz','AD12_1.xyz','AD14_3.xyz','airborne1.pts','DU9_2.xyz','ullmann_subset.xyz']
 
 	def databaseType(db_type: int, points):
 		"""
 		Creates database from points according to id given and points
+
 		:param points: ndarray, points xyz nx3
 		:param db_type: 0 = pointcloud, 1 = equalcells, 2 = kdtree
 		:return: Database object
@@ -31,7 +30,7 @@ if __name__ == '__main__':
 			return kdtree(points, False, 10)
 
 
-	for db_type in range(1, 3):
+	for db_type in range(0, 3):  # Choose which db types to run
 
 		# setting db type depended paths and params
 		if db_type == 0:

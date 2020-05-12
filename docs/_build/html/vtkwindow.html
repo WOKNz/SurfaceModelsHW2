@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>vtkwindow module &mdash; Surface Models HW2 documentation</title>
+
+
+    <script src="_static/js/modernizr.min.js" type="text/javascript"></script>
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"
+            type="text/javascript"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+
+    <script src="_static/js/theme.js" type="text/javascript"></script>
+
+
+    <link href="_static/css/theme.css" rel="stylesheet" type="text/css"/>
+    <link href="_static/pygments.css" rel="stylesheet" type="text/css"/>
+    <link href="genindex.html" rel="index" title="Index"/>
+    <link href="search.html" rel="search" title="Search"/>
+    <link href="pointcloud.html" rel="prev" title="pointcloud module"/>
+</head>
+
+<body class="wy-body-for-nav">
+
+
+<div class="wy-grid-for-nav">
+
+    <nav class="wy-nav-side" data-toggle="wy-nav-shift">
+        <div class="wy-side-scroll">
+            <div class="wy-side-nav-search">
+
+
+                <a class="icon icon-home" href="index.html"> Surface Models HW2
+
+
+                </a>
+
+
+                <div role="search">
+                    <form action="search.html" class="wy-form" id="rtd-search-form" method="get">
+                        <input name="q" placeholder="Search docs" type="text"/>
+                        <input name="check_keywords" type="hidden" value="yes"/>
+                        <input name="area" type="hidden" value="default"/>
+                    </form>
+                </div>
+
+
+            </div>
+
+            <div aria-label="main navigation" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+
+
+                <p class="caption"><span class="caption-text">Contents:</span></p>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal" href="modules.html">Git</a>
+                        <ul class="current">
+                            <li class="toctree-l2"><a class="reference internal" href="batchtests.html">batchtests
+                                module</a></li>
+                            <li class="toctree-l2"><a class="reference internal" href="equalcells.html">equalcells
+                                module</a></li>
+                            <li class="toctree-l2"><a class="reference internal" href="fastloadtxt.html">fastloadtxt
+                                module</a></li>
+                            <li class="toctree-l2"><a class="reference internal" href="fastroot.html">fastroot
+                                module</a></li>
+                            <li class="toctree-l2"><a class="reference internal" href="glyph_ui.html">glyph_ui
+                                module</a></li>
+                            <li class="toctree-l2"><a class="reference internal" href="kdtree.html">kdtree module</a>
+                            </li>
+                            <li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
+                            <li class="toctree-l2"><a class="reference internal" href="pointcloud.html">pointcloud
+                                module</a></li>
+                            <li class="toctree-l2 current"><a class="current reference internal" href="#">vtkwindow
+                                module</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+
+            </div>
+        </div>
+    </nav>
+
+    <section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+
+
+        <nav aria-label="top navigation" class="wy-nav-top">
+
+            <i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+            <a href="index.html">Surface Models HW2</a>
+
+        </nav>
+
+
+        <div class="wy-nav-content">
+
+            <div class="rst-content">
+
+
+                <div aria-label="breadcrumbs navigation" role="navigation">
+
+                    <ul class="wy-breadcrumbs">
+
+                        <li><a href="index.html">Docs</a> &raquo;</li>
+
+                        <li><a href="modules.html">Git</a> &raquo;</li>
+
+                        <li>vtkwindow module</li>
+
+
+                        <li class="wy-breadcrumbs-aside">
+
+
+                            <a href="_sources/vtkwindow.rst.txt" rel="nofollow"> View page source</a>
+
+
+                        </li>
+
+                    </ul>
+
+
+                    <hr/>
+                </div>
+                <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+                    <div itemprop="articleBody">
+
+                        <div class="section" id="module-vtkwindow">
+                            <span id="vtkwindow-module"></span>
+                            <h1>vtkwindow module<a class="headerlink" href="#module-vtkwindow"
+                                                   title="Permalink to this headline">¶</a></h1>
+                            <dl class="class">
+                                <dt id="vtkwindow.GlyphViewer">
+                                    <em class="property">class </em><code
+                                        class="sig-prename descclassname">vtkwindow.</code><code
+                                        class="sig-name descname">GlyphViewer</code><span class="sig-paren">(</span><em
+                                        class="sig-param">parent</em>, <em class="sig-param">points</em><span
+                                        class="sig-paren">)</span><a class="headerlink" href="#vtkwindow.GlyphViewer"
+                                                                     title="Permalink to this definition">¶</a></dt>
+                                <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span
+                                        class="pre">PyQt5.QtWidgets.QFrame</span></code></p>
+                                    <p>Full Vtk frame class</p>
+                                    <dl class="method">
+                                        <dt id="vtkwindow.GlyphViewer.button_load">
+                                            <code class="sig-name descname">button_load</code><span
+                                                class="sig-paren">(</span><span class="sig-paren">)</span><a
+                                                class="headerlink" href="#vtkwindow.GlyphViewer.button_load"
+                                                title="Permalink to this definition">¶</a></dt>
+                                        <dd><p>Loading points file and start preview of it</p>
+                                        </dd>
+                                    </dl>
+
+                                    <dl class="attribute">
+                                        <dt id="vtkwindow.GlyphViewer.filename_status">
+                                            <code class="sig-name descname">filename_status</code><a class="headerlink"
+                                                                                                     href="#vtkwindow.GlyphViewer.filename_status"
+                                                                                                     title="Permalink to this definition">¶</a>
+                                        </dt>
+                                        <dd></dd>
+                                    </dl>
+
+                                    <dl class="method">
+                                        <dt id="vtkwindow.GlyphViewer.reredner_points">
+                                            <code class="sig-name descname">reredner_points</code><span
+                                                class="sig-paren">(</span><em class="sig-param">list_of_points</em><span
+                                                class="sig-paren">)</span><a class="headerlink"
+                                                                             href="#vtkwindow.GlyphViewer.reredner_points"
+                                                                             title="Permalink to this definition">¶</a>
+                                        </dt>
+                                        <dd><p>Updates label with which files has been loaded</p>
+                                            <dl class="field-list simple">
+                                                <dt class="field-odd">Parameters</dt>
+                                                <dd class="field-odd"><p><strong>list_of_points</strong>
+                                                    (<em>ndarray</em>) – List of points xyz, xn3</p>
+                                                </dd>
+                                            </dl>
+                                        </dd>
+                                    </dl>
+
+                                    <dl class="method">
+                                        <dt id="vtkwindow.GlyphViewer.run_filter">
+                                            <code class="sig-name descname">run_filter</code><span
+                                                class="sig-paren">(</span><em class="sig-param">radius</em>, <em
+                                                class="sig-param">angle</em>, <em class="sig-param">db_type</em>, <em
+                                                class="sig-param">is_ground_pnts</em>, <em class="sig-param">is_objects_pnts</em><span
+                                                class="sig-paren">)</span><a class="headerlink"
+                                                                             href="#vtkwindow.GlyphViewer.run_filter"
+                                                                             title="Permalink to this definition">¶</a>
+                                        </dt>
+                                        <dd><p>Starting the process of filtering of loaded file with set parameters</p>
+                                            <dl class="field-list simple">
+                                                <dt class="field-odd">Parameters</dt>
+                                                <dd class="field-odd">
+                                                    <ul class="simple">
+                                                        <li><p><strong>radius</strong> (<em>str</em>) – Searched radius
+                                                            in meters</p></li>
+                                                        <li><p><strong>angle</strong> (<em>str</em>) – Treshold angle in
+                                                            degrees</p></li>
+                                                        <li><p><strong>db_type</strong> (<em>int</em>) – Type of
+                                                            database (Point Cloud = 0, Equal Cells = 1, K-d tree = 2)
+                                                        </p></li>
+                                                        <li><p><strong>is_ground_pnts</strong> (<em>bool</em>) –
+                                                            Parameter to show or not ground points</p></li>
+                                                        <li><p><strong>is_objects_pnts</strong> (<em>bool</em>) –
+                                                            Parameter to show or not objects points</p></li>
+                                                    </ul>
+                                                </dd>
+                                            </dl>
+                                        </dd>
+                                    </dl>
+
+                                    <dl class="method">
+                                        <dt id="vtkwindow.GlyphViewer.start">
+                                            <code class="sig-name descname">start</code><span class="sig-paren">(</span><span
+                                                class="sig-paren">)</span><a class="headerlink"
+                                                                             href="#vtkwindow.GlyphViewer.start"
+                                                                             title="Permalink to this definition">¶</a>
+                                        </dt>
+                                        <dd></dd>
+                                    </dl>
+
+                                </dd>
+                            </dl>
+
+                            <dl class="class">
+                                <dt id="vtkwindow.GlyphViewerApp">
+                                    <em class="property">class </em><code
+                                        class="sig-prename descclassname">vtkwindow.</code><code
+                                        class="sig-name descname">GlyphViewerApp</code><span
+                                        class="sig-paren">(</span><em class="sig-param">points</em><span
+                                        class="sig-paren">)</span><a class="headerlink" href="#vtkwindow.GlyphViewerApp"
+                                                                     title="Permalink to this definition">¶</a></dt>
+                                <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span
+                                        class="pre">PyQt5.QtWidgets.QMainWindow</span></code></p>
+                                    <p>PyQt5 Main Window Class</p>
+                                    <dl class="method">
+                                        <dt id="vtkwindow.GlyphViewerApp.initialize">
+                                            <code class="sig-name descname">initialize</code><span
+                                                class="sig-paren">(</span><span class="sig-paren">)</span><a
+                                                class="headerlink" href="#vtkwindow.GlyphViewerApp.initialize"
+                                                title="Permalink to this definition">¶</a></dt>
+                                        <dd><p>Initializes Vtk Widget</p>
+                                        </dd>
+                                    </dl>
+
+                                    <dl class="method">
+                                        <dt id="vtkwindow.GlyphViewerApp.run">
+                                            <code class="sig-name descname">run</code><span
+                                                class="sig-paren">(</span><span class="sig-paren">)</span><a
+                                                class="headerlink" href="#vtkwindow.GlyphViewerApp.run"
+                                                title="Permalink to this definition">¶</a></dt>
+                                        <dd><p>Initiates filtering process with set parameters</p>
+                                        </dd>
+                                    </dl>
+
+                                    <dl class="method">
+                                        <dt id="vtkwindow.GlyphViewerApp.set_status_loaded">
+                                            <code class="sig-name descname">set_status_loaded</code><span
+                                                class="sig-paren">(</span><em class="sig-param">filename</em><span
+                                                class="sig-paren">)</span><a class="headerlink"
+                                                                             href="#vtkwindow.GlyphViewerApp.set_status_loaded"
+                                                                             title="Permalink to this definition">¶</a>
+                                        </dt>
+                                        <dd><p>Updates label with which files has been loaded</p>
+                                        </dd>
+                                    </dl>
+
+                                    <dl class="method">
+                                        <dt id="vtkwindow.GlyphViewerApp.setup">
+                                            <code class="sig-name descname">setup</code><span class="sig-paren">(</span><em
+                                                class="sig-param">points</em><span class="sig-paren">)</span><a
+                                                class="headerlink" href="#vtkwindow.GlyphViewerApp.setup"
+                                                title="Permalink to this definition">¶</a></dt>
+                                        <dd><p>Function that creates the link to qVtk including interface elements</p>
+                                            <p>:param points:nx3 points data
+                                                :type points: ndarray</p>
+                                        </dd>
+                                    </dl>
+
+                                </dd>
+                            </dl>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+                <footer>
+
+                    <div aria-label="footer navigation" class="rst-footer-buttons" role="navigation">
+
+
+                        <a accesskey="p" class="btn btn-neutral float-left" href="pointcloud.html" rel="prev"
+                           title="pointcloud module"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+
+                    </div>
+
+
+                    <hr/>
+
+                    <div role="contentinfo">
+                        <p>
+                            &copy; Copyright 2020, Sasha
+
+                        </p>
+                    </div>
+                    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a
+                        href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a
+                        href="https://readthedocs.org">Read the Docs</a>.
+
+                </footer>
+
+            </div>
+        </div>
+
+    </section>
+
+</div>
+
+
+<script type="text/javascript">
+    jQuery(function () {
+        SphinxRtdTheme.Navigation.enable(true);
+    });
+</script>
+
+
+</body>
+</html>
